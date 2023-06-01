@@ -48,5 +48,4 @@ def main():
             st.write(response)
 
 if __name__ == "__main__":
-
-    main()
+    streamlit.run(main, debug=True)
