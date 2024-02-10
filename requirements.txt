@@ -4,5 +4,5 @@ python-dotenv
 streamlit
 pydantic
 openai
-langchain-community
+-U langchain-community
 tiktoken
