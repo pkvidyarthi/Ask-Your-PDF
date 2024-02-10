@@ -6,3 +6,4 @@ pydantic
 openai
 langchain-community
 tiktoken
+faiss-cpu
