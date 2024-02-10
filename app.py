@@ -12,8 +12,10 @@ from langchain.llms import OpenAI
 
 def main():
     load_dotenv()
-    st.set_page_config(page_title = "Ask Your PDF")
-    st.header("Ask Your PDF")
+    st.set_page_config(page_title="Ask Your PDF")
+    # Display the header with a specific text color
+    st.markdown(f'<h1 style="color: #D2042D;">Ask Your PDF</h1>', unsafe_allow_html=True)
+    st.write("Discover answers within your uploaded PDF effortlessly.\nUpload your PDF and uncover answers tailored to its content with ease.")
 
     # Upload File
     pdf = st.file_uploader("Upload Your PDF", type = "pdf")
@@ -48,4 +50,5 @@ def main():
             st.write(response)
 
 if __name__ == "__main__":
-    st.run(main, debug=True)
+    # st.run(main, debug=True)
+    main()
