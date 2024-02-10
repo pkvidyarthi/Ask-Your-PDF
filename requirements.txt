@@ -3,3 +3,5 @@ PyPDF2
 python-dotenv
 streamlit
 pydantic
+openai
+langchain-community
