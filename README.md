@@ -1,3 +1,5 @@
+![User Interface](https://github.com/pkvidyarthi/Ask-Your-PDF/raw/main/Screenshot%20(112).png)
+
 **Working with PDFs: Simplifying Document Analysis with Python**
 
 In the realm of document analysis, extracting insights from PDF files can be a daunting task. However, with the right set of tools and libraries in Python, this process can be streamlined and made more accessible. In this article, we'll explore a project called "Ask Your PDF," a Streamlit application that empowers users to upload PDF files, extract their text content, and ask questions about the document.
