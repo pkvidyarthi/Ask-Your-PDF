@@ -6,6 +6,7 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings, OpenAI
 from langchain_community.vectorstores import FAISS
 from langchain.chains.question_answering import load_qa_chain
+from openai.error import RateLimitError
 
 # Load environment variables
 load_dotenv()
@@ -27,27 +28,34 @@ def main():
         for page in pdf_reader.pages:
             text += page.extract_text() or ""
 
-        # Split text into chunks
+        # Split text into chunks (optimized for fewer API calls)
         text_splitter = CharacterTextSplitter(
             separator="\n",
-            chunk_size=1000,
-            chunk_overlap=200,
+            chunk_size=3000,
+            chunk_overlap=300,
             length_function=len
         )
         chunks = text_splitter.split_text(text)
 
-        # Create embeddings
-        embeddings = OpenAIEmbeddings(openai_api_key=os.getenv("OPENAI_API_KEY"))
-        knowledge_base = FAISS.from_texts(chunks, embeddings)
+        # 🚨 Limit chunks for free quota (only first 10 for testing)
+        chunks = chunks[:10]
 
-        # User Input
-        user_question = st.text_input("Ask a query about your PDF : ")
-        if user_question:
-            docs = knowledge_base.similarity_search(user_question)
-            llm = OpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"))
-            chain = load_qa_chain(llm, chain_type="stuff")
-            response = chain.run(input_documents=docs, question=user_question)
-            st.write(response)
+        try:
+            # Create embeddings
+            embeddings = OpenAIEmbeddings(openai_api_key=os.getenv("OPENAI_API_KEY"))
+            knowledge_base = FAISS.from_texts(chunks, embeddings)
+
+            # User Input
+            user_question = st.text_input("Ask a query about your PDF : ")
+            if user_question:
+                docs = knowledge_base.similarity_search(user_question)
+                llm = OpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"))
+                chain = load_qa_chain(llm, chain_type="stuff")
+                response = chain.run(input_documents=docs, question=user_question)
+                st.write(response)
+
+        except RateLimitError:
+            st.error("🚨 OpenAI API rate limit exceeded. Please try again later or check your credits.")
 
 
 if __name__ == "__main__":
