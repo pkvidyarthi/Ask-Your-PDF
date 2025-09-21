@@ -6,7 +6,7 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings, OpenAI
 from langchain_community.vectorstores import FAISS
 from langchain.chains.question_answering import load_qa_chain
-from openai.error import RateLimitError
+from openai import RateLimitError  # ✅ Correct import
 
 # Load environment variables
 load_dotenv()
@@ -28,7 +28,7 @@ def main():
         for page in pdf_reader.pages:
             text += page.extract_text() or ""
 
-        # Split text into chunks (optimized for fewer API calls)
+        # Split text into chunks
         text_splitter = CharacterTextSplitter(
             separator="\n",
             chunk_size=3000,
@@ -37,7 +37,7 @@ def main():
         )
         chunks = text_splitter.split_text(text)
 
-        # 🚨 Limit chunks for free quota (only first 10 for testing)
+        # 🚨 Limit chunks for free quota
         chunks = chunks[:10]
 
         try:
