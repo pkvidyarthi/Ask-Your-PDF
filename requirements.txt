@@ -2,6 +2,6 @@ streamlit
 python-dotenv
 PyPDF2
 langchain
-langchain-openai
 langchain-community
+langchain-openai
 faiss-cpu
